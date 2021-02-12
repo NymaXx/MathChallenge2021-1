@@ -14,8 +14,10 @@ public class MainActivity extends AppCompatActivity {
          private Button okbtn;
          private Pregunta p;
          private TextView puntaje;
+         private TextView cron;
 
          private int actualpoint;
+         private int counter = 30;
 
 
     @Override
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         respuestaInput = findViewById(R.id.respuestaInput);
         okbtn = findViewById(R.id.okBtn);
         puntaje = findViewById(R.id.puntaje);
+        cron = findViewById(R.id.cron);
+
+        puntaje.setText("Puntaje: ");
+
 
         nuevaPregunta();
 
@@ -56,19 +62,34 @@ public class MainActivity extends AppCompatActivity {
         if(resInt == correcta){
             Toast.makeText(this,"Correcto",Toast.LENGTH_SHORT).show();
             actualpoint = actualpoint + 5;
-            puntaje.setText(""+actualpoint);
             nuevaPregunta();
         }else{
             Toast.makeText(this,"Mal",Toast.LENGTH_SHORT).show();
             actualpoint = actualpoint - 4;
-            puntaje.setText(""+actualpoint);
         }
         respuestaInput.setText("");
+        puntaje.setText("Puntaje: "+actualpoint);
     }
 
     public void nuevaPregunta(){
         p = new Pregunta();
         pregunta.setText(p.getPregunta());
+    }
+
+    public void cronometer(){
+        new Thread(
+                ()->{
+                    while(counter>0){
+                        counter --;
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).start();
+
     }
 
 
