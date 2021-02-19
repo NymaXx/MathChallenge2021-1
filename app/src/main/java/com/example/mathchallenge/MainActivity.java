@@ -2,7 +2,9 @@ package com.example.mathchallenge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,11 +18,14 @@ public class MainActivity extends AppCompatActivity {
          private TextView puntaje;
          private TextView cron;
          private Button tryAgainButton;
+         private Boolean isTouching = false;
+         private int tiempo = 1500;
 
          private int actualpoint;
          private int counter = 30;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,15 +38,12 @@ public class MainActivity extends AppCompatActivity {
         puntaje = findViewById(R.id.puntaje);
         cron = findViewById(R.id.cron);
 
+
         puntaje.setText("Puntaje: ");
-
         chronometer();
-
-
         nuevaPregunta();
 
         actualpoint = 0;
-        //Toast.makeText(this,"respuesta"+p.getRespuesta(), Toast.LENGTH_LONG).show();
 
         okbtn.setOnClickListener(
                 v->{
@@ -49,14 +51,58 @@ public class MainActivity extends AppCompatActivity {
             }
         );
 
-        pregunta.setOnClickListener(
+        pregunta.setOnTouchListener(
+                (view, event)-> {
+                    switch(event.getAction()){
+
+                        case MotionEvent.ACTION_DOWN:
+                            isTouching = true;
+                            new Thread(
+                                    ()->{
+
+                                        for(int i=0 ; i<20 ; i++){
+                                            try {
+                                                Thread.sleep(75);
+                                                if(isTouching == false){
+                                                    return;
+                                                }else{
+
+                                                }
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                        runOnUiThread(
+                                                ()->{
+                                                    Toast.makeText(this,"sirve",
+                                                                    Toast.LENGTH_LONG).show();
+                                                    p = new Pregunta();
+                                                    pregunta.setText(p.getPregunta());
+                                                }
+                                        );
+                                    }
+                            ).start();
+                            break;
+
+                            case MotionEvent.ACTION_UP:
+                                isTouching = false;
+                                break;
+                    }
+                    return true;
+                }
+        );
+
+        //cambio depregunta con click
+
+        /*pregunta.setOnClickListener(
                 v->{
                     p = new Pregunta();
                     pregunta.setText(p.getPregunta());
                 }
-        );
+        );*/
 
-    }
+}
 
     public void responder(){
         String res = respuestaInput.getText().toString();
