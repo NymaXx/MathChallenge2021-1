@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
          private Pregunta p;
          private TextView puntaje;
          private TextView cron;
+         private Button tryAgainButton;
 
          private int actualpoint;
          private int counter = 30;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tryAgainButton = findViewById(R.id.tryAgainButton);
         pregunta = findViewById(R.id.pregunta);
         respuestaInput = findViewById(R.id.respuestaInput);
         okbtn = findViewById(R.id.okBtn);
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         cron = findViewById(R.id.cron);
 
         puntaje.setText("Puntaje: ");
+
+        chronometer();
 
 
         nuevaPregunta();
@@ -76,20 +80,21 @@ public class MainActivity extends AppCompatActivity {
         pregunta.setText(p.getPregunta());
     }
 
-    public void cronometer(){
+    public void chronometer() {
         new Thread(
-                ()->{
-                    while(counter>0){
-                        counter --;
+                () -> {
+                    while (counter > 0) {
+                        counter--;
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        //cron.setText("Tiempo: " + counter);
                     }
                 }
         ).start();
-
+    }
     }
 
 
@@ -99,4 +104,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-}
