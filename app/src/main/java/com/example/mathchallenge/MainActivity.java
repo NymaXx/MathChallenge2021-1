@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
             }
         );
 
+        tryAgainButton.setOnClickListener(
+                v->{
+                    restart();
+                }
+        );
+
         pregunta.setOnTouchListener(
                 (view, event)-> {
                     switch(event.getAction()){
@@ -75,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                         runOnUiThread(
                                                 ()->{
-                                                    Toast.makeText(this,"sirve",
-                                                                    Toast.LENGTH_LONG).show();
+                                                   /* Toast.makeText(this,"sirve",
+                                                                    Toast.LENGTH_LONG).show();*/
                                                     p = new Pregunta();
                                                     pregunta.setText(p.getPregunta());
                                                 }
@@ -110,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
         int correcta = p.getRespuesta();
 
         if(resInt == correcta){
-            Toast.makeText(this,"Correcto",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Correcto",Toast.LENGTH_SHORT).show();
             actualpoint = actualpoint + 5;
             nuevaPregunta();
         }else{
-            Toast.makeText(this,"Mal",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Mal",Toast.LENGTH_SHORT).show();
             actualpoint = actualpoint - 4;
         }
         respuestaInput.setText("");
@@ -137,10 +144,20 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         //cron.setText("Tiempo: " + counter);
+                        if(counter == 0){
+                            tryAgainButton.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
         ).start();
     }
+
+    public void restart(){
+        counter = 30;
+        nuevaPregunta();
+        actualpoint = 0;
+
+        }
     }
 
 
